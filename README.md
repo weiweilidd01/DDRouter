@@ -81,7 +81,7 @@ let kRouterTestViewController = "TestSDK.TestViewController"
         }
     ```
     
-* 3.方法讲解 <br/>
+####  5.方法讲解
 已经将DDRouter的方法全部扩展到UIViewController,更人性化的调用。
 
 ```
@@ -163,8 +163,8 @@ let kRouterTestViewController = "TestSDK.TestViewController"
     }
 ```
 
-#### 5.[查看demo更多场景使用](https://github.com/weiweilidd01/DDRouter.git)
+#### 6.[查看demo更多场景使用](https://github.com/weiweilidd01/DDRouter.git)
 
-#### 6.集成，已经上传至DDKit
+#### 7.集成，已经上传至DDKit
 
     
