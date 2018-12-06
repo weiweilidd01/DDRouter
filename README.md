@@ -1,92 +1,170 @@
-# DDMediator --模块(业务)间通信中间者
+# DDRouter -- 控制器之间的跳转路由
 
-本组件只适用于模块(业务)间的通信，作为一个中间媒介，减少模块间的耦合关系<br/>
-控制器与控制器之间的解耦请使用DDRoute<br/>
-具体的使用请参照[demo](https://github.com/weiweilidd01/DDMediator.git)<br/>
-#### 1.app中常见的层级结构
-<img src="https://upload-images.jianshu.io/upload_images/2026287-16311aa4a72a70a6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width=400 height=500 />
+#### 1.常见的控制器之间的跳转
+<img src="https://upload-images.jianshu.io/upload_images/2026287-fee2f66cec32dab4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width=400 height=200 />
 
-#### 2.常见的业务之间关联关系
-<img src="https://upload-images.jianshu.io/upload_images/2026287-5a014afade8e4d35.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width=400 height=400 />
+以上跳转存在哪些问题：<br/>
+1.架构层面: 业务之间有耦合，界面之间也有耦合，a和b就紧紧的绑在一起<br/>
+2.业务方面: 若控制器a和b不在一个业务模块中，就不利于模块间的拆分，将b剥离出，a中就会编译出错，无法实现业务的独立
 
-图中业务模块分类只是随便举例，模拟在业务间可能存在的耦合关系。<br/>
-若业务众多，业务间实际的耦合关系可能会复杂。
+#### 2.采用DDRouter的关系
 
-#### 3.采用DDMediator业务之间的关系
-<img src="https://upload-images.jianshu.io/upload_images/2026287-ea2695b2cafda3db.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width=400 height=400 />
+<img src="https://upload-images.jianshu.io/upload_images/2026287-7eca5b3aaf0e1adc.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width=400 height=180 />
 
-DDMediator作为一个中间者，协调各个模块之间的通信传输。<br/>
-* 未采用中间媒介，业务间的传递关系为:<br/>
- **A <---> B**<br/>
-* 采用之后，关系为:<br/>
- **A <---> Mediator <---> B**<br/>
- 
-* 从开发角度看，中间多了一层Mediator，感觉让人更复杂，觉得有点多余麻烦<br/>
-* 从业务角度看，大大减少了不同业务间的耦合，更方便灵活的管理整个业务的版本迭代，对于产品线众多的情况，相同的业务可以更快速灵活的移植<br/>
-* 对于多人开发同一产品，只需pod自己的业务模块即可，大大的提供xcode编译速度，大大减少github冲突问题<br/>
+#### 3.DDRouter的实现
 
-#### 4.模块化浅谈
-* 1.什么情况下需要模块化<br/>
-个人见解： 如果产品线单一，同一个产品人数不超过4人，个人觉得没必要模块化<br/>
-
-* 2.在开发的哪个阶段模块化<br/>
-个人见解： 在业务上线后，进入正常的迭代需求。再去着手模块化。若在项目的建立阶段，就统一模块化，会花费大量的时间和精力在一些基础劳动力上，大大影响写代码的心情，也会拖延前期产品规划的业务需求，前期开发对业务模块的划分还没有明确的清晰<br/>
-
-#### 5.Mediator实现思路
-核心代码非常简单，不到40行<br/>
-采用了iOS大神[casatwy](https://github.com/casatwy/CTMediator.git)提出的Target-Action方式。<br/>
-他的方案有个大痛点：就是没有callback回调。 业务场景：若A模块需求获取B模块的数据，需要B模块提供action响应此需求。网络请求存在延时回调。他的方案就不能解决<br/>
-因此，本方案增加了callback，满足更多的业务需求场景。<br/>
-将模块传的参数与callback统一封装到MediatorParams一个对象中传递。<br/>
+采用字符串映射关系，实现对象创建。<br/>
+核心代码
 ```
-extension DDMediator {
-public func perform(Target targetName: String, actionName: String, params: MediatorParamDic?, complete: MediatorCallBack?) {
-        /// 获取targetClass字符串
-        let swiftModuleName = params?[kMediatorTargetModuleName] as? String
-        var targetClassString: String?
-        if (swiftModuleName?.count ?? 0) > 0 {
-            targetClassString = (swiftModuleName ?? "") + "." + "\(moduleName)_\(targetName)"
+ open func pushViewController(_ key: String, isXib: Bool = false, params: DDRouterParameter? = nil, animated: Bool = true, complete:((Any?)->())? = nil) {
+        let cls = classFromeString(key: key)
+        let vc = cls.init()
+        vc.params = params
+        vc.complete = complete
+        vc.hidesBottomBarWhenPushed = true
+        
+        let topViewController = DDRouterUtils.currentTopViewController()
+        if topViewController?.navigationController != nil {
+            topViewController?.navigationController?.pushViewController(vc, animated: animated)
         } else {
-            let namespace = Bundle.main.infoDictionary!["CFBundleExecutable"] as! String
-            targetClassString = namespace + "." + "Target_\(targetName)"
+            topViewController?.present(vc, animated: animated, completion: nil)
         }
-        
-        guard let classString = targetClassString  else {
-            return
-        }
-        
-        //获取Target对象
-        let targetClass = NSClassFromString(classString) as! NSObject.Type
-        let target = targetClass.init()
-        
-        //获取Target对象中的方法Selector
-        let sel = Selector(actionName)
-        
-        //定义回调block
-        let result: MediatorCallBack = { res in
-            complete?(res)
-        }
-        
-        //创建参数model
-        let model = MediatorParams()
-        model.callBack = result
-        model.params = params
-        if target.responds(to: sel) == true {
-            target.perform(sel, with: model)
-        }
-        
-        return
     }
-}
+```
 
 ```
-#### 7.模块间调用的流程图：
-<img src="https://upload-images.jianshu.io/upload_images/2026287-68a3846717f57020.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" width=800 height=400 />
+open func classFromeString(key: String) -> UIViewController.Type {
+        if key.contains(".") == true {
+            let clsName = key
+            let cls = NSClassFromString(clsName) as! UIViewController.Type
+            return cls
+        }
+        
+        let namespace = Bundle.main.infoDictionary!["CFBundleExecutable"] as! String
+        let clsName = namespace + "." + key
+        let cls = NSClassFromString(clsName) as! UIViewController.Type
+        return cls
+    }
+```
 
-#### 8.集成，已经上传至DDKit
+#### 4.如何使用
 
-#### 9.总结：
+* 1.在项目中创建一个RouterConfig.swift文件<br/>
+将每一个控制器对象定义一个key
 
- **模块化只是一个架构思路，如何在不同模块之间建立一个桥梁。一千个开发者心中有一千个Mediator的方式。所完成的任务归根结底都是为了减少模块间的耦合，及处理模块间的数据传递途径**
-<br/>
-**本Demo方案不是最优，有更好的点子再采纳**
+```
+//定义的路由 key
+// MARK: ---  "ViewController"等,必须为对应的控制器名字
+
+let kRouterControllerA = "ViewController"
+
+let kRouterControllerB = "BViewController"
+
+let kRouterControllerC = "CViewController"
+
+//若为Pods中的控制器，前面必须加命名空间
+let kRouterDDScanViewController = "DDKit.DDScanViewController"
+
+//若为SDK中的控制器，前面必须加命名空间
+let kRouterTestViewController = "TestSDK.TestViewController"
+
+```
+
+
+*   2.a->b 跳转 <br/>
+    
+    ```
+        let model = Model()
+        pushViewController(kRouterControllerB, params: ["model": model,"title": "hello"], animated: true) { (res) in
+            //上级界面回调
+            print(res)
+        }
+    ```
+    
+* 3.方法讲解 <br/>
+已经将DDRouter的方法全部扩展到UIViewController,更人性化的调用。
+
+```
+  /// 路由入口 push
+    ///
+    /// - Parameters:
+    ///   - key: 定义的key
+    ///   - params: 需要传递的参数
+    ///   - parent: 是否是present显示
+    ///   - animated: 是否需要动画
+    ///   - complete: 上级控制器回调传值，只能层级传递
+    public func pushViewController(_ key: String, params: DDRouterParameter? = nil, animated: Bool = true, complete:((Any?)->())? = nil) 
+    
+    /// 路由入口 present
+    ///
+    /// - Parameters:
+    ///   - key: 路由key
+    ///   - params: 参数
+    ///   - animated: 是否需要动画
+    ///   - complete: 上级控制器回调传值，只能层级传递
+    public func presentViewController(_ key: String, params: DDRouterParameter? = nil, animated: Bool = true, complete:((Any?)->())? = nil) 
+    
+    
+    /// 正常的pop操作
+    ///
+    /// - Parameters:
+    ///   - vc: 当前控制器
+    ///   - dismiss: true: dismiss退出，false: pop退出
+    ///   - animated: 是否需要动画
+    public func pop(animated: Bool = true) 
+    
+     /// pop到指定的控制器
+    ///
+    /// - Parameters:
+    ///   - currentVC: 当前控制器
+    ///   - toVC: 目标控制器对应的key
+    ///   - animated: 是否需要动画
+    public func pop(ToViewController toVC: String, animated: Bool = true) 
+    
+     /// pop到根目录
+    ///
+    /// - Parameters:
+    ///   - currentVC: 当前控制器
+    ///   - animated: 是否需要动画
+    public func pop(ToRootViewController animated: Bool = true)
+    
+    /// dismiss操作
+    ///
+    /// - Parameters:
+    ///   - vc: 当前控制器
+    ///   - animated: 是否需要动画
+    public func dismiss(_ animated: Bool = true) 
+```
+
+ 并给每个控制器对象绑定一个params和complete属性,可任意的传值，以及控制器之间数据的回调
+
+```
+
+    public var params: DDRouterParameter? {
+        set {
+            objc_setAssociatedObject(self, &DDRouterAssociatedKeys.paramsKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        
+        get {
+            return objc_getAssociatedObject(self, &DDRouterAssociatedKeys.paramsKey) as? DDRouterParameter
+        }
+    }
+    
+    /// 添加回调闭包，适用于反向传值，只能层级传递
+    public var complete: ((Any?)->())? {
+        set {
+            objc_setAssociatedObject(self, &DDRouterAssociatedKeys.completeKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+        
+        get {
+            return objc_getAssociatedObject(self, &DDRouterAssociatedKeys.completeKey) as? ((Any?) -> ())
+            
+        }
+    }
+```
+
+#### 5.[查看demo更多场景使用](https://github.com/weiweilidd01/DDRouter.git)
+
+#### 6.集成，已经上传至DDKit
+
+    
