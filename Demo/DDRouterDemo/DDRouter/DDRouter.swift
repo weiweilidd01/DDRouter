@@ -31,7 +31,7 @@ public class DDRouter: NSObject {
         vc.complete = complete
         vc.hidesBottomBarWhenPushed = true
         
-        let topViewController = DDRouterUtils.currentTopViewController()
+        let topViewController = DDRouterUtils.getTopViewController
         if topViewController?.navigationController != nil {
             topViewController?.navigationController?.pushViewController(vc, animated: animated)
         } else {
@@ -52,7 +52,7 @@ public class DDRouter: NSObject {
         let vc = cls.init()
         vc.params = params
         vc.complete = complete
-        let topViewController = DDRouterUtils.currentTopViewController()
+        let topViewController = DDRouterUtils.getTopViewController
         topViewController?.present(vc, animated: animated, completion: nil)
     }
     
@@ -141,26 +141,37 @@ public class DDRouter: NSObject {
 // MARK: -  DDRouterUtils --- 获取最上层的viewController
 public class DDRouterUtils {
     //获取当前页面
-    public class func currentTopViewController() -> UIViewController? {
-        if let rootViewController = UIApplication.shared.keyWindow?.rootViewController{
-            return currentTopViewController(rootViewController: rootViewController)
-        }else{
-            return nil
-        }
+    public class var getTopViewController: UIViewController? {
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        return getTopViewController(viewController: rootViewController)
     }
     
-    public class func currentTopViewController(rootViewController: UIViewController) -> UIViewController {
-        if (rootViewController.isKind(of: UITabBarController.self)) {
-            let tabBarController = rootViewController as! UITabBarController
-            return currentTopViewController(rootViewController: tabBarController.selectedViewController!)
+    public class func getTopViewController(viewController: UIViewController?) -> UIViewController? {
+        
+        if let presentedViewController = viewController?.presentedViewController {
+            return getTopViewController(viewController: presentedViewController)
         }
-        if (rootViewController.isKind(of: UINavigationController.self)) {
-            let navigationController = rootViewController as! UINavigationController
-            return currentTopViewController(rootViewController: navigationController.visibleViewController!)
+        
+        if let tabBarController = viewController as? UITabBarController,
+            let selectViewController = tabBarController.selectedViewController {
+            return getTopViewController(viewController: selectViewController)
         }
-        if ((rootViewController.presentedViewController) != nil) {
-            return currentTopViewController(rootViewController: rootViewController.presentedViewController!)
+        
+        if let navigationController = viewController as? UINavigationController,
+            let visibleViewController = navigationController.visibleViewController {
+            return getTopViewController(viewController: visibleViewController)
         }
-        return rootViewController
+        
+        if let pageViewController = viewController as? UIPageViewController,
+            pageViewController.viewControllers?.count == 1 {
+            return getTopViewController(viewController: pageViewController.viewControllers?.first)
+        }
+        
+        for subView in viewController?.view.subviews ?? [] {
+            if let childViewController = subView.next as? UIViewController {
+                return getTopViewController(viewController: childViewController)
+            }
+        }
+        return viewController
     }
 }
