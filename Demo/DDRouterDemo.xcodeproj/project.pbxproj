@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE264DA2222D0F3400A4511C /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE264DA1222D0F3400A4511C /* OrderViewController.swift */; };
 		CEAC8F9421B67B09002363CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC8F9321B67B09002363CF /* AppDelegate.swift */; };
 		CEAC8F9621B67B09002363CF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC8F9521B67B09002363CF /* ViewController.swift */; };
 		CEAC8F9921B67B09002363CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEAC8F9721B67B09002363CF /* Main.storyboard */; };
@@ -14,7 +15,6 @@
 		CEAC8F9E21B67B0A002363CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEAC8F9C21B67B0A002363CF /* LaunchScreen.storyboard */; };
 		CEAC8FA921B67B0A002363CF /* DDRouterDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC8FA821B67B0A002363CF /* DDRouterDemoTests.swift */; };
 		CEAC8FB421B67B0A002363CF /* DDRouterDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC8FB321B67B0A002363CF /* DDRouterDemoUITests.swift */; };
-		CEAC8FC321B67B62002363CF /* RouterConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC8FC221B67B62002363CF /* RouterConfig.swift */; };
 		CEAC8FC721B67BE6002363CF /* DDRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC8FC621B67BE6002363CF /* DDRouter.swift */; };
 		CEAC8FCA21B68EC3002363CF /* BViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC8FC821B68EC3002363CF /* BViewController.swift */; };
 		CEAC8FCB21B68EC3002363CF /* BViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEAC8FC921B68EC3002363CF /* BViewController.xib */; };
@@ -86,6 +86,7 @@
 /* Begin PBXFileReference section */
 		87170BF47EC27D9F13782FFD /* Pods-DDRouterDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDRouterDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DDRouterDemo/Pods-DDRouterDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		92BD1BBCE332666F16DE57F4 /* Pods-DDRouterDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDRouterDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-DDRouterDemo/Pods-DDRouterDemo.release.xcconfig"; sourceTree = "<group>"; };
+		CE264DA1222D0F3400A4511C /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		CEAC8F9021B67B09002363CF /* DDRouterDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDRouterDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEAC8F9321B67B09002363CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEAC8F9521B67B09002363CF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -99,7 +100,6 @@
 		CEAC8FAF21B67B0A002363CF /* DDRouterDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDRouterDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEAC8FB321B67B0A002363CF /* DDRouterDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDRouterDemoUITests.swift; sourceTree = "<group>"; };
 		CEAC8FB521B67B0A002363CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CEAC8FC221B67B62002363CF /* RouterConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterConfig.swift; sourceTree = "<group>"; };
 		CEAC8FC621B67BE6002363CF /* DDRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDRouter.swift; sourceTree = "<group>"; };
 		CEAC8FC821B68EC3002363CF /* BViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BViewController.swift; sourceTree = "<group>"; };
 		CEAC8FC921B68EC3002363CF /* BViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BViewController.xib; sourceTree = "<group>"; };
@@ -200,10 +200,10 @@
 				CEAC8F9321B67B09002363CF /* AppDelegate.swift */,
 				CEAC8F9521B67B09002363CF /* ViewController.swift */,
 				CEAC8FC821B68EC3002363CF /* BViewController.swift */,
+				CE264DA1222D0F3400A4511C /* OrderViewController.swift */,
 				CEAC8FC921B68EC3002363CF /* BViewController.xib */,
 				CEAC8FCE21B7704D002363CF /* CViewController.swift */,
 				CEAC8FCF21B7704D002363CF /* CViewController.xib */,
-				CEAC8FC221B67B62002363CF /* RouterConfig.swift */,
 				CEAC8F9721B67B09002363CF /* Main.storyboard */,
 				CEAC8F9A21B67B0A002363CF /* Assets.xcassets */,
 				CEAC8F9C21B67B0A002363CF /* LaunchScreen.storyboard */,
@@ -528,12 +528,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEAC8FC721B67BE6002363CF /* DDRouter.swift in Sources */,
-				CEAC8FC321B67B62002363CF /* RouterConfig.swift in Sources */,
 				CEAC8FD021B7704D002363CF /* CViewController.swift in Sources */,
 				CEAC8F9621B67B09002363CF /* ViewController.swift in Sources */,
 				CEAC8FCA21B68EC3002363CF /* BViewController.swift in Sources */,
 				CEAC8F9421B67B09002363CF /* AppDelegate.swift in Sources */,
 				CEAC8FCD21B7680D002363CF /* UIViewController+DDRouter.swift in Sources */,
+				CE264DA2222D0F3400A4511C /* OrderViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -38,6 +38,39 @@ extension UIViewController {
         }
     }
     
+    /// push  sb控制器
+    ///
+    /// - Parameters:
+    ///   - sbName: storybord名字
+    ///   - identifier: id
+    ///   - params: 参数
+    ///   - animated: 是否动画
+    ///   - complete: 回调
+    public func pushSBViewController(_ sbName: String,
+                                   identifier: String,
+                                   params: DDRouterParameter? = nil,
+                                   animated: Bool = true,
+                                   complete:((Any?)->())? = nil) {
+        DDRouter.share.pushSBViewController(sbName, identifier: identifier, params: params, animated: animated, complete: complete)
+    }
+
+    /// present sb控制器
+    ///
+    /// - Parameters:
+    ///   - sbName: storybord名字
+    ///   - identifier: id
+    ///   - params: 入参
+    ///   - animated: 是否动画
+    ///   - complete: 回调
+    public func presentSBViewController(_ sbName: String,
+                                      identifier: String,
+                                      params: DDRouterParameter? = nil,
+                                      animated: Bool = true,
+                                      complete:((Any?)->())? = nil) {
+        DDRouter.share.presentSBViewController(sbName, identifier: identifier, params: params, animated: animated, complete: complete)
+    }
+        
+    
     /// 路由入口 push
     ///
     /// - Parameters:

@@ -15,7 +15,58 @@ public typealias  DDRouterParameter = [String: Any]
 public class DDRouter: NSObject {
     //单列
     public static let share = DDRouter()
- 
+    
+    /// push  sb控制器
+    ///
+    /// - Parameters:
+    ///   - sbName: storybord名字
+    ///   - identifier: id
+    ///   - params: 参数
+    ///   - animated: 是否动画
+    ///   - complete: 回调
+    open func pushSBViewController(_ sbName: String,
+                                 identifier: String,
+                                 params: DDRouterParameter? = nil,
+                                 animated: Bool = true,
+                                 complete:((Any?)->())? = nil) {
+
+        let vc =  UIStoryboard(name: sbName, bundle: nil).instantiateViewController(withIdentifier: identifier)
+        vc.params = params
+        vc.complete = complete
+        vc.hidesBottomBarWhenPushed = true
+        
+        let topViewController = DDRouterUtils.getTopViewController
+        if topViewController?.navigationController != nil {
+            topViewController?.navigationController?.pushViewController(vc, animated: animated)
+        } else {
+            topViewController?.present(vc, animated: animated, completion: nil)
+        }
+    }
+    
+    /// present sb控制器
+    ///
+    /// - Parameters:
+    ///   - sbName: storybord名字
+    ///   - identifier: id
+    ///   - params: 入参
+    ///   - animated: 是否动画
+    ///   - complete: 回调
+    open func presentSBViewController(_ sbName: String,
+                                   identifier: String,
+                                   params: DDRouterParameter? = nil,
+                                   animated: Bool = true,
+                                   complete:((Any?)->())? = nil) {
+        
+        let vc =  UIStoryboard(name: sbName, bundle: nil).instantiateViewController(withIdentifier: identifier)
+        vc.params = params
+        vc.complete = complete
+        
+        vc.params = params
+        vc.complete = complete
+        let topViewController = DDRouterUtils.getTopViewController
+        topViewController?.present(vc, animated: animated, completion: nil)
+    }
+
     /// 路由入口 push
     ///
     /// - Parameters:
@@ -24,7 +75,7 @@ public class DDRouter: NSObject {
     ///   - parent: 是否是present显示
     ///   - animated: 是否需要动画
     ///   - complete: 上级控制器回调传值，只能层级传递
-    open func pushViewController(_ key: String, isXib: Bool = false, params: DDRouterParameter? = nil, animated: Bool = true, complete:((Any?)->())? = nil) {
+    open func pushViewController(_ key: String, params: DDRouterParameter? = nil, animated: Bool = true, complete:((Any?)->())? = nil) {
         let cls = classFromeString(key: key)
         let vc = cls.init()
         vc.params = params

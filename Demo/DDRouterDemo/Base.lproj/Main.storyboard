@@ -62,10 +62,23 @@
                                     <action selector="pushPosAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gla-SU-I2i"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="126-1E-0oU">
+                                <rect key="frame" x="101" y="428" width="149" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="JPY-yP-IjH"/>
+                                    <constraint firstAttribute="width" constant="149" id="NUN-H1-ukw"/>
+                                </constraints>
+                                <state key="normal" title="跳转storybord界面"/>
+                                <connections>
+                                    <action selector="pushOrderAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CUM-Z2-osP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="126-1E-0oU" firstAttribute="top" secondItem="jMt-My-kys" secondAttribute="bottom" constant="26" id="0jz-YK-vpT"/>
                             <constraint firstItem="jMt-My-kys" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="104" id="7N4-Bh-wMw"/>
+                            <constraint firstItem="126-1E-0oU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="101" id="BM5-DZ-cCC"/>
                             <constraint firstItem="dMS-0r-5Xk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="132" id="Bgo-Yk-zv7"/>
                             <constraint firstItem="glC-72-amk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="73" id="IqO-Sh-Qso"/>
                             <constraint firstItem="glC-72-amk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="117" id="V7J-fq-lJf"/>
@@ -81,6 +94,42 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="992.79999999999995" y="27.436281859070466"/>
+        </scene>
+        <!--Order View Controller-->
+        <scene sceneID="rDq-qi-CdS">
+            <objects>
+                <viewController storyboardIdentifier="OrderViewController" id="swM-yy-OR8" customClass="OrderViewController" customModule="DDRouterDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="B1I-60-z3M">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="订单" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JHg-jG-v97">
+                                <rect key="frame" x="121" y="151" width="35" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bv-ie-Lcm">
+                                <rect key="frame" x="123" y="220" width="31" height="30"/>
+                                <state key="normal" title="返回"/>
+                                <connections>
+                                    <action selector="callBackAction:" destination="swM-yy-OR8" eventType="touchUpInside" id="9oC-EN-HCh"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="JHg-jG-v97" firstAttribute="top" secondItem="gAX-zm-JGt" secondAttribute="top" constant="131" id="1J0-36-J5X"/>
+                            <constraint firstItem="6bv-ie-Lcm" firstAttribute="top" secondItem="JHg-jG-v97" secondAttribute="bottom" constant="48" id="B7M-u1-0I7"/>
+                            <constraint firstItem="6bv-ie-Lcm" firstAttribute="leading" secondItem="gAX-zm-JGt" secondAttribute="leading" constant="123" id="ixr-f5-E5p"/>
+                            <constraint firstItem="JHg-jG-v97" firstAttribute="leading" secondItem="gAX-zm-JGt" secondAttribute="leading" constant="121" id="q2l-PA-Efs"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="gAX-zm-JGt"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lQY-xe-gve" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1756" y="27"/>
         </scene>
         <!--Item-->
         <scene sceneID="hCw-8h-HwF">
@@ -99,7 +148,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hZr-a4-AyG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1076" y="686.80659670164926"/>
+            <point key="canvasLocation" x="993" y="723"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="dgg-0f-d99">

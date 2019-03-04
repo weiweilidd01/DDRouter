@@ -26,7 +26,7 @@ class CViewController: UIViewController {
     
     // pop到指定的控制器
     @IBAction func popToController(_ sender: Any) {
-        pop(ToViewController: kRouterControllerA)
+        pop(ToViewController: "BViewController")
     }
     
     // pop到根控制器

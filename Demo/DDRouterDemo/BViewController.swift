@@ -21,13 +21,13 @@ class BViewController: UIViewController {
     }
   
     @IBAction func pushCAction(_ sender: Any) {
-        pushViewController(kRouterControllerC, params: params, animated: true) { (res) in
+        pushViewController("CViewController", params: params, animated: true) { (res) in
             print(res)
         }
     }
     
     @IBAction func presentCAction(_ sender: Any) {
-        presentViewController(kRouterControllerC, params: params, animated: true, complete: nil)
+        presentViewController("CViewController", params: params, animated: true, complete: nil)
     }
     
     @IBAction func dismissAction(_ sender: Any) {
