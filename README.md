@@ -16,7 +16,7 @@
 采用字符串映射关系，实现对象创建。<br/>
 核心代码
 ```
- open func pushViewController(_ key: String, isXib: Bool = false, params: DDRouterParameter? = nil, animated: Bool = true, complete:((Any?)->())? = nil) {
+ open func pushViewController(_ key: String, params: DDRouterParameter? = nil, animated: Bool = true, complete:((Any?)->())? = nil) {
         let cls = classFromeString(key: key)
         let vc = cls.init()
         vc.params = params
@@ -49,33 +49,13 @@ open func classFromeString(key: String) -> UIViewController.Type {
 
 #### 4.如何使用
 
-* 1.在项目中创建一个RouterConfig.swift文件<br/>
-将每一个控制器对象定义一个key
-
-```
-//定义的路由 key
-// MARK: ---  "ViewController"等,必须为对应的控制器名字
-
-let kRouterControllerA = "ViewController"
-
-let kRouterControllerB = "BViewController"
-
-let kRouterControllerC = "CViewController"
-
-//若为Pods中的控制器，前面必须加命名空间
-let kRouterDDScanViewController = "DDKit.DDScanViewController"
-
-//若为SDK中的控制器，前面必须加命名空间
-let kRouterTestViewController = "TestSDK.TestViewController"
-
-```
-
+* 1.key定义为对应的控制器名字
 
 *   2.a->b 跳转 <br/>
     
     ```
         let model = Model()
-        pushViewController(kRouterControllerB, params: ["model": model,"title": "hello"], animated: true) { (res) in
+        pushViewController("BViewController", params: ["model": model,"title": "hello"], animated: true) { (res) in
             //上级界面回调
             print(res)
         }
