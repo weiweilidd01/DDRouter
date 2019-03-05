@@ -25,16 +25,16 @@ public class DDRouter: NSObject {
     ///   - animated: 是否动画
     ///   - complete: 回调
     open func pushSBViewController(_ sbName: String,
-                                 identifier: String,
+                                 identifier: String? = nil,
                                  params: DDRouterParameter? = nil,
                                  animated: Bool = true,
                                  complete:((Any?)->())? = nil) {
 
         var vc: UIViewController = UIViewController()
-        if identifier.isEmpty == true {
-            vc =  UIStoryboard(name: sbName, bundle: nil).instantiateInitialViewController() ?? UIViewController()
+        if  let id = identifier {
+            vc = UIStoryboard(name: sbName, bundle: nil).instantiateViewController(withIdentifier: id)
         } else {
-            vc =  UIStoryboard(name: sbName, bundle: nil).instantiateViewController(withIdentifier: identifier)
+            vc = UIStoryboard(name: sbName, bundle: nil).instantiateInitialViewController() ?? UIViewController()
         }
       
         vc.params = params
@@ -58,15 +58,15 @@ public class DDRouter: NSObject {
     ///   - animated: 是否动画
     ///   - complete: 回调
     open func presentSBViewController(_ sbName: String,
-                                   identifier: String,
+                                   identifier: String? = nil,
                                    params: DDRouterParameter? = nil,
                                    animated: Bool = true,
                                    complete:((Any?)->())? = nil) {
         var vc: UIViewController = UIViewController()
-        if identifier.isEmpty == true {
-            vc =  UIStoryboard(name: sbName, bundle: nil).instantiateInitialViewController() ?? UIViewController()
+        if let id = identifier {
+            vc = UIStoryboard(name: sbName, bundle: nil).instantiateViewController(withIdentifier: id)
         } else {
-            vc =  UIStoryboard(name: sbName, bundle: nil).instantiateViewController(withIdentifier: identifier)
+            vc = UIStoryboard(name: sbName, bundle: nil).instantiateInitialViewController() ?? UIViewController()
         }
         vc.params = params
         vc.complete = complete

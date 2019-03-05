@@ -47,7 +47,7 @@ extension UIViewController {
     ///   - animated: 是否动画
     ///   - complete: 回调
     public func pushSBViewController(_ sbName: String,
-                                   identifier: String,
+                                   identifier: String? = nil,
                                    params: DDRouterParameter? = nil,
                                    animated: Bool = true,
                                    complete:((Any?)->())? = nil) {
@@ -63,7 +63,7 @@ extension UIViewController {
     ///   - animated: 是否动画
     ///   - complete: 回调
     public func presentSBViewController(_ sbName: String,
-                                      identifier: String,
+                                      identifier: String? = nil,
                                       params: DDRouterParameter? = nil,
                                       animated: Bool = true,
                                       complete:((Any?)->())? = nil) {
