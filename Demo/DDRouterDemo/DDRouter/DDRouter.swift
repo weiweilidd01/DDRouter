@@ -30,11 +30,17 @@ public class DDRouter: NSObject {
                                  animated: Bool = true,
                                  complete:((Any?)->())? = nil) {
 
-        let vc =  UIStoryboard(name: sbName, bundle: nil).instantiateViewController(withIdentifier: identifier)
+        var vc: UIViewController = UIViewController()
+        if identifier.isEmpty == true {
+            vc =  UIStoryboard(name: sbName, bundle: nil).instantiateInitialViewController() ?? UIViewController()
+        } else {
+            vc =  UIStoryboard(name: sbName, bundle: nil).instantiateViewController(withIdentifier: identifier)
+        }
+      
         vc.params = params
         vc.complete = complete
         vc.hidesBottomBarWhenPushed = true
-        
+
         let topViewController = DDRouterUtils.getTopViewController
         if topViewController?.navigationController != nil {
             topViewController?.navigationController?.pushViewController(vc, animated: animated)
@@ -56,8 +62,12 @@ public class DDRouter: NSObject {
                                    params: DDRouterParameter? = nil,
                                    animated: Bool = true,
                                    complete:((Any?)->())? = nil) {
-        
-        let vc =  UIStoryboard(name: sbName, bundle: nil).instantiateViewController(withIdentifier: identifier)
+        var vc: UIViewController = UIViewController()
+        if identifier.isEmpty == true {
+            vc =  UIStoryboard(name: sbName, bundle: nil).instantiateInitialViewController() ?? UIViewController()
+        } else {
+            vc =  UIStoryboard(name: sbName, bundle: nil).instantiateViewController(withIdentifier: identifier)
+        }
         vc.params = params
         vc.complete = complete
         
